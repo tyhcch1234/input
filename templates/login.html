@@ -1,0 +1,30 @@
+{% extends "base.html" %}
+{% block title %}登入{% endblock %}
+
+{% block content %}
+<section class="card form-card">
+  <h1>登入</h1>
+  <p class="muted">可用「用戶名稱」或「電郵」登入。</p>
+
+  <form method="post" autocomplete="off">
+    <label>
+      用戶名稱或電郵
+      <input type="text" name="identity" value="{{ identity or '' }}" required autofocus>
+    </label>
+
+    <label>
+      密碼
+      <input type="password" name="password" required autocomplete="current-password">
+    </label>
+
+    <label class="check">
+      <input type="checkbox" name="remember" value="1">
+      <span>記住我（7 天內免再登入）</span>
+    </label>
+
+    <button class="btn" type="submit">登入</button>
+  </form>
+
+  <p class="foot-link">還沒有帳號？<a href="{{ url_for('register') }}">立即註冊</a></p>
+</section>
+{% endblock %}

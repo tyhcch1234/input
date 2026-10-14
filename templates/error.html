@@ -1,0 +1,10 @@
+{% extends "base.html" %}
+{% block title %}{{ code }}{% endblock %}
+
+{% block content %}
+<section class="card form-card center">
+  <h1 class="big-code">{{ code }}</h1>
+  <p class="muted">{{ message }}</p>
+  <a class="btn" href="{{ url_for('index') }}">回到首頁</a>
+</section>
+{% endblock %}

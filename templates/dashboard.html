@@ -1,0 +1,50 @@
+{% extends "base.html" %}
+{% block title %}我的筆記{% endblock %}
+
+{% block content %}
+<section class="card">
+  <div class="row-between">
+    <div>
+      <h1>我的筆記</h1>
+      <p class="muted">
+        註冊時間：{{ current_user['created_at'] }}
+        ｜ 上次登入：{{ current_user['last_login'] or '首次登入' }}
+      </p>
+    </div>
+    <div class="stat">
+      <div class="stat-num">{{ stats['total'] }}</div>
+      <div class="stat-label">筆記總數</div>
+    </div>
+  </div>
+
+  <form method="post" class="note-form">
+    <input type="text" name="title" placeholder="標題" required maxlength="120">
+    <textarea name="body" rows="3" placeholder="內容（可留空）"></textarea>
+    <button class="btn" type="submit">新增筆記</button>
+  </form>
+</section>
+
+<section class="card">
+  <h2>筆記列表</h2>
+
+  {% if notes %}
+    <ul class="notes">
+      {% for note in notes %}
+        <li>
+          <div class="note-main">
+            <h3>{{ note['title'] }}</h3>
+            {% if note['body'] %}<p>{{ note['body'] }}</p>{% endif %}
+            <span class="stamp">{{ note['created_at'] }}</span>
+          </div>
+          <form method="post" action="{{ url_for('delete_note', note_id=note['id']) }}"
+                onsubmit="return confirm('確定刪除這則筆記？');">
+            <button class="btn btn-danger" type="submit">刪除</button>
+          </form>
+        </li>
+      {% endfor %}
+    </ul>
+  {% else %}
+    <p class="empty">目前還沒有筆記，用上面的表單新增第一則吧。</p>
+  {% endif %}
+</section>
+{% endblock %}

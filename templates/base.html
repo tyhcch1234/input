@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html lang="zh-Hant">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>{% block title %}登入示範{% endblock %} · Flask + SQLite</title>
+  <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+</head>
+<body>
+  <header class="topbar">
+    <a class="brand" href="{{ url_for('index') }}">🔐 登入示範<span>Flask + SQLite</span></a>
+    <nav>
+      {% if current_user %}
+        <span class="who">👤 {{ current_user['username'] }}</span>
+        <a href="{{ url_for('dashboard') }}">我的筆記</a>
+        <a href="{{ url_for('change_password') }}">修改密碼</a>
+        <a class="btn-ghost" href="{{ url_for('logout') }}">登出</a>
+      {% else %}
+        <a href="{{ url_for('login') }}">登入</a>
+        <a class="btn-ghost" href="{{ url_for('register') }}">註冊</a>
+      {% endif %}
+    </nav>
+  </header>
+
+  <main class="wrap">
+    {% with messages = get_flashed_messages(with_categories=true) %}
+      {% if messages %}
+        <div class="flash-stack">
+          {% for category, message in messages %}
+            <div class="flash {{ category }}">{{ message }}</div>
+          {% endfor %}
+        </div>
+      {% endif %}
+    {% endwith %}
+
+    {% block content %}{% endblock %}
+  </main>
+
+  <footer class="foot">
+    示範用途：密碼經雜湊才入庫、查詢全部參數化、session cookie 設 HttpOnly + SameSite。
+  </footer>
+</body>
+</html>

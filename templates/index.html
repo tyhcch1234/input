@@ -1,0 +1,47 @@
+{% extends "base.html" %}
+{% block title %}首頁{% endblock %}
+
+{% block content %}
+<section class="card hero">
+  <h1>一個真正會登入、真的連資料庫的網站</h1>
+  <p class="lead">
+    Flask 後端 + SQLite 資料庫。註冊後帳密寫進資料庫，登入後用 session 記住身分，
+    未登入的人無法進入〈我的筆記〉頁面。
+  </p>
+
+  <div class="grid">
+    <div class="mini">
+      <h3>1. 註冊</h3>
+      <p>密碼經過雜湊才入庫，資料庫裡看不到明文。</p>
+    </div>
+    <div class="mini">
+      <h3>2. 登入</h3>
+      <p>比對雜湊值後發出簽署過的 session cookie。</p>
+    </div>
+    <div class="mini">
+      <h3>3. 寫筆記</h3>
+      <p>筆記存進 notes 表，每人只看到自己的資料。</p>
+    </div>
+  </div>
+
+  <div class="actions">
+    {% if current_user %}
+      <a class="btn" href="{{ url_for('dashboard') }}">進入我的筆記</a>
+    {% else %}
+      <a class="btn" href="{{ url_for('register') }}">立即註冊</a>
+      <a class="btn btn-line" href="{{ url_for('login') }}">我已有帳號</a>
+    {% endif %}
+  </div>
+</section>
+
+<section class="card">
+  <h2>技術重點</h2>
+  <table class="kv">
+    <tr><th>密碼儲存</th><td>werkzeug <code>generate_password_hash</code>（scrypt + 隨機 salt，資料庫內無明文）</td></tr>
+    <tr><th>SQL 注入防護</th><td>全部查詢使用 <code>?</code> 佔位符與參數綁定</td></tr>
+    <tr><th>存取控制</th><td><code>@login_required</code> 裝飾器 + <code>WHERE user_id = ?</code> 雙重把關</td></tr>
+    <tr><th>唯一性約束</th><td>資料庫 UNIQUE 索引攔截重複帳號，非只靠前端驗證</td></tr>
+    <tr><th>Cookie 安全</th><td>HttpOnly、SameSite=Lax、簽署式 session</td></tr>
+  </table>
+</section>
+{% endblock %}

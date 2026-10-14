@@ -1,0 +1,36 @@
+{% extends "base.html" %}
+{% block title %}註冊{% endblock %}
+
+{% block content %}
+<section class="card form-card">
+  <h1>建立新帳號</h1>
+  <p class="muted">用戶名稱 3–20 字元（英數、<code>_</code>、<code>.</code>）；密碼至少 8 字元。</p>
+
+  <form method="post" autocomplete="off">
+    <label>
+      用戶名稱
+      <input type="text" name="username" value="{{ username or '' }}" required minlength="3" maxlength="20"
+             pattern="[A-Za-z0-9_.]+" title="只可用英文字母、數字、底線與點">
+    </label>
+
+    <label>
+      電郵
+      <input type="email" name="email" value="{{ email or '' }}" required>
+    </label>
+
+    <label>
+      密碼
+      <input type="password" name="password" required minlength="8" autocomplete="new-password">
+    </label>
+
+    <label>
+      確認密碼
+      <input type="password" name="password2" required minlength="8" autocomplete="new-password">
+    </label>
+
+    <button class="btn" type="submit">註冊</button>
+  </form>
+
+  <p class="foot-link">已經有帳號？<a href="{{ url_for('login') }}">前往登入</a></p>
+</section>
+{% endblock %}
